@@ -47,7 +47,9 @@ export class AuthGuard implements CanActivate {
         "access_token": jwt
       });
     } else if (request.session?.token) {
-      grant = await this.keycloak.grantManager.createGrant(request.session.token);
+      grant = await this.keycloak.grantManager.createGrant({
+        access_token: request.session.token
+      });
     } else if(isPublic ===  false) {
       throw new UnauthorizedException();
     }
