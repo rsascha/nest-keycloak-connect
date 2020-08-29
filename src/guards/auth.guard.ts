@@ -11,6 +11,7 @@ import { KEYCLOAK_INSTANCE } from '../constants';
 import { Reflector } from '@nestjs/core';
 import { KeycloakedRequest } from '../keycloaked-request';
 
+
 declare module 'keycloak-connect' {
   interface GrantType {
     access_token?: KeycloakConnect.Token
@@ -35,7 +36,7 @@ export class AuthGuard implements CanActivate {
   }
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
-    const request:KeycloakedRequest<Request> = context.switchToHttp().getRequest();
+    const request: KeycloakedRequest<Request> = context.switchToHttp().getRequest();
     const isPublic = !!this.reflector.get<string>("public-path", context.getHandler());
     const roles = this.reflector.get<(string | string[])[]>("roles", context.getHandler());
 
@@ -43,18 +44,30 @@ export class AuthGuard implements CanActivate {
     let grant: KeycloakConnect.Grant | undefined;
     
     if (jwt) {
-      grant = await this.keycloak.grantManager.createGrant({
-        "access_token": jwt
-      });
+      try {
+        grant = await this.keycloak.grantManager.createGrant({
+          "access_token": jwt
+        });
+      } catch (error) {
+        if (!isPublic)
+          throw new UnauthorizedException();
+        this.logger.error(error);
+      }
     } else if (request.session?.token) {
-      grant = await this.keycloak.grantManager.createGrant({
-        access_token: request.session.token
-      });
-    } else if(isPublic ===  false) {
+      try {
+        grant = await this.keycloak.grantManager.createGrant({
+          access_token: request.session.token
+        });
+      } catch (error) {
+        if (!isPublic)
+          throw new UnauthorizedException();
+        this.logger.error(error);
+      }
+    } else if (isPublic === false) {
       throw new UnauthorizedException();
     }
 
-    if(grant){
+    if (grant) {
       request.grant = (grant as any) as KeycloakConnect.GrantType;
 
       if (!grant.isExpired() && !request.session.authUser) {
@@ -62,10 +75,10 @@ export class AuthGuard implements CanActivate {
         const user = grant.access_token && await this.keycloak.grantManager.userInfo(grant.access_token);
         request.session.authUser = user;
       }
-  
+
       request.user = request.session.authUser;
-  
-      if(roles && request.grant){
+
+      if (roles && request.grant) {
         return roles.some(role => Array.isArray(role) ? role.every(innerRole => request.grant?.access_token?.hasRole(innerRole)) : request.grant?.access_token?.hasRole(role));
       }
 

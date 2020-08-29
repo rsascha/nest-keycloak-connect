@@ -6,6 +6,7 @@ export type KeycloakedRequest<T = Request> = {
     email_verified: boolean,
     preferred_username: string
   },
+  destroySession(cb:any):void;
   grant: GrantType | undefined,
   session: {[key: string]: any},
 } & T;

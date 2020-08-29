@@ -2,6 +2,7 @@ import {
   Injectable,
   Inject,
   Scope,
+  UnauthorizedException,
 } from '@nestjs/common';
 import requestPromise = require('request-promise');
 import { KeycloakConnectOptions } from './interface/keycloak-connect-options.interface';
@@ -22,26 +23,36 @@ export class KeycloakService {
     password: string,
     scope = 'openid profile ',
   ): Promise<unknown> {
-    const res = await requestPromise.post(
-      `${this.options.authServerUrl}/realms/${this.options.realm}/protocol/openid-connect/token`,
-      {
-        form: {
-          grant_type: 'password',
-          "client_id": this.options.clientId,
-          "client_secret": this.options.secret,
-          scope: scope,
-          username: username,
-          password: password,
+    let res;
+    try {
+      res = await requestPromise.post(
+        `${this.options.authServerUrl}/realms/${this.options.realm}/protocol/openid-connect/token`,
+        {
+          form: {
+            grant_type: 'password',
+            "client_id": this.options.clientId,
+            "client_secret": this.options.secret,
+            scope: scope,
+            username: username,
+            password: password,
+          },
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         },
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      },
-    );
+      );
+        
+    } catch (error) {
+      throw new UnauthorizedException(error);
+    }
 
     if (typeof res === 'string' && res.indexOf('access_token') !== -1) {
       this.request.session.token = res;
-      this.request.grant = await this.keycloak.grantManager.createGrant({
-        "access_token": JSON.parse(res).access_token
-      }) as any;
+      try {
+        this.request.grant = await this.keycloak.grantManager.createGrant({
+          "access_token": JSON.parse(res).access_token
+        }) as any;
+      } catch (error) {
+        throw new UnauthorizedException(error);
+      }
       return true;
     }
 
