@@ -23,9 +23,9 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/ferrerojosh/nest-keycloak-connect"
+    "url": "https://github.com/cenkce/nest-keycloak-connect"
   },
-  "bugs": "https://github.com/ferrerojosh/nest-keycloak-connect/issues",
+  "bugs": "https://github.com/cenkce/nest-keycloak-connect/issues",
   "dependencies": {
     "reflect-metadata": "^0.1.12",
     "@nestjs/common": "^7.0.3",
