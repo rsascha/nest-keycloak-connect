@@ -6,7 +6,9 @@ import { KeycloakConnectOptionsFactory } from './interface/keycloak-connect-opti
 import { KeycloakController } from './keycloak.controller';
 import { KeycloakService } from './keycloak.service';
 
+export * from './decorators/public-path.decorator';
 export * from './decorators/resource.decorator';
+export * from './decorators/roles.decorator';
 export * from './decorators/scopes.decorator';
 export * from './guards/auth.guard';
 export * from './guards/resource.guard';
