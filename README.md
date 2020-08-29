@@ -62,7 +62,7 @@ import { KeycloakConnectModule, ResourceGuard, AuthGuard } from 'nest-keycloak-c
 export class AppModule {}
 ```
 
-Create Public Paths
+Create Public Paths and Login using KeycloakService
 
 ```typescript
 import { Resource, Scopes, KeycloakService, Roles, KeycloakedRequest } from '@cenkce/nest-keycloak-connect';
