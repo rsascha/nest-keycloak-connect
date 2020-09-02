@@ -28,14 +28,18 @@
   },
   "bugs": "https://github.com/cenkce/nest-keycloak-connect/issues",
   "dependencies": {
-    "reflect-metadata": "^0.1.12",
     "@nestjs/common": "^7.0.3",
     "@nestjs/core": "^7.0.3",
     "keycloak-connect": "^9.0.2",
-    "request-promise": "^4.2.5"
+    "reflect-metadata": "^0.1.12",
+    "request-promise": "^4.2.5",
+    "rxjs": "^6.6.2"
   },
   "devDependencies": {
+    "@nestjs/testing": "^7.4.4",
+    "@types/jest": "^26.0.13",
     "cpr": "^3.0.1",
+    "express": "^4.17.1",
     "prettier": "^1.19.1",
     "reflect-metadata": "^0.1.12",
     "rimraf": "^3.0.2",
