@@ -2,6 +2,14 @@
 
 An adapter for [keycloak-nodejs-connect](https://github.com/keycloak/keycloak-nodejs-connect).
 
+- [Nest Keycloak Connect](#nest-keycloak-connect)
+  - [Features](#features)
+  - [Installation](#installation)
+    - [Yarn](#yarn)
+    - [NPM](#npm)
+  - [Getting Started](#getting-started)
+  - [Development Tools](#development-tools)
+
 ## Features
 
 - Protect your resources using [Keycloak's Authorization Services](https://www.keycloak.org/docs/latest/authorization_services/).
@@ -173,3 +181,7 @@ export class ProductController {
   }
 }
 ```
+
+## Development Tools
+
+To launch a local Keycloak server for development follow: [development-tools/keycloak](development-tools/keycloak)
