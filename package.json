@@ -8,6 +8,7 @@
   ],
   "license": "MIT",
   "scripts": {
+    "start": "npm run start:dev",
     "start:dev": "tsc -w",
     "prebuild": "rimraf dist",
     "build": "tsc || true",
