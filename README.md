@@ -8,7 +8,9 @@ An adapter for [keycloak-nodejs-connect](https://github.com/keycloak/keycloak-no
     - [Yarn](#yarn)
     - [NPM](#npm)
   - [Getting Started](#getting-started)
-  - [Development Tools](#development-tools)
+  - [Development](#development)
+    - [Develop this Module with your application](#develop-this-module-with-your-application)
+    - [Local Keycloak](#local-keycloak)
 
 ## Features
 
@@ -99,7 +101,7 @@ export class AppController {
   async auth(@Res() resp: FastifyReply<any>, @Body() body, @Session() session) {
     try {
       const res = await this.keycloakService.login(body.user, body.password);
-    
+
       if(typeof res === 'string' && res.indexOf('access_token') !== -1){
         session.auth = true;
         session.token = res;
@@ -182,6 +184,9 @@ export class ProductController {
 }
 ```
 
-## Development Tools
+## Development
 
+### Develop this Module with your application
+
+### Local Keycloak
 To launch a local Keycloak server for development follow: [development-tools/keycloak](development-tools/keycloak)
