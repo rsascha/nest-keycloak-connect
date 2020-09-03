@@ -1,7 +1,6 @@
 import { Controller, Get, Post, Req, Logger } from '@nestjs/common';
 import { AppService } from './app.service';
 import { Request } from 'express';
-import { Resource, Scopes, KeycloakService, Roles, KeycloakedRequest, PublicPath } from 'nest-keycloak-connect';
 
 @Controller()
 export class AppController {
